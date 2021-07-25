@@ -12,7 +12,7 @@ class AuthController extends Controller
     {
         $item = User::where('email', $request->email)->first();
         LoginRequest::rules($request, $item, 'users');
-        if ($request->email === config('const.GUEST_EMAIL.USER')) {
+        if ($request->email === config('const.GUEST_EMAIL')) {
             $role = 'guest';
         } else {
             $role = 'user';
