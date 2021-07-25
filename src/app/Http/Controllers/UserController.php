@@ -8,16 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $items = User::all();
-        ;
-
-        return response()->json([
-            'data' => $items
-        ], 200);
-    }
-
     public function store(Request $request)
     {
         $item = new User;
