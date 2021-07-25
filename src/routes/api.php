@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RoutineController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,3 +17,6 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 //習慣
 Route::apiResource('routines', RoutineController::class);
+
+//記録
+Route::apiResource('records', RecordController::class);
