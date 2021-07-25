@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Rank extends Model
 {
     use HasFactory;
+
+    public function totalRoutines()
+    {
+        return $this->hasMany(Routine::class, 'total_rank_id', 'id');
+    }
+
+    public function continuousRoutines()
+    {
+        return $this->hasMany(Routine::class, 'continuous_rank_id', 'id');
+    }
 }

@@ -13,4 +13,29 @@ class Routine extends Model
         'name',
         'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function records()
+    {
+        return $this->hasMany(Record::class, 'routine_id', 'id');
+    }
+
+    public function totalRank()
+    {
+        return $this->belongsTo(Rank::class, 'total_rank_id', 'id');
+    }
+
+    public function continuousRank()
+    {
+        return $this->belongsTo(Rank::class, 'continuous_rank_id', 'id');
+    }
+
+    public function recoveryRank()
+    {
+        return $this->belongsTo(Rank::class, 'recovery_rank_id', 'id');
+    }
 }

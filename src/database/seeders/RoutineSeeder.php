@@ -14,6 +14,6 @@ class RoutineSeeder extends Seeder
      */
     public function run()
     {
-        Routine::factory(50)->create();
+        Routine::factory(15)->create();
     }
 }

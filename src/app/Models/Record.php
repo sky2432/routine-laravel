@@ -12,4 +12,9 @@ class Record extends Model
     protected $fillable = [
         'routine_id'
     ];
+
+    public function routine()
+    {
+        return $this->belongsTo(Routine::class, 'routine_id', 'id');
+    }
 }

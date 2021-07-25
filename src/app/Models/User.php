@@ -18,4 +18,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function routines()
+    {
+        return $this->hasMany(Routine::class, 'user_id', 'id');
+    }
 }
