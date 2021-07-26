@@ -7,6 +7,7 @@ use App\Models\Record;
 use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
@@ -39,6 +40,7 @@ class RoutineFactory extends Factory
         $rank_id = Rank::where('name', '見習い')->value('id');
         $recovery_rank_id = RecoveryRank::where('name', '見習い')->value('id');
 
+        $date = new Carbon('-8 days');
 
         return [
             'name' => Arr::random($routines),
@@ -46,6 +48,8 @@ class RoutineFactory extends Factory
             'total_rank_id' => $rank_id,
             'continuous_rank_id' => $rank_id,
             'recovery_rank_id' => $recovery_rank_id,
+            'created_at' => $date,
+            'updated_at' => $date,
         ];
     }
 
