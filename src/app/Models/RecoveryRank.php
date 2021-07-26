@@ -9,6 +9,10 @@ class RecoveryRank extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id'
+    ];
+
     public function routines()
     {
         return $this->hasMany(Routine::class, 'recovery_rank_id', 'id');

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Rank;
+use App\Models\Record;
+use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -33,11 +36,36 @@ class RoutineFactory extends Factory
             '散歩'
         ];
 
+        $rank_id = Rank::where('name', '見習い')->value('id');
+        $recovery_rank_id = RecoveryRank::where('name', '見習い')->value('id');
+
+
         return [
             'name' => Arr::random($routines),
             'user_id' => User::pluck('id')->random(),
-            'created_at' => $this->faker->dateTimeBetween('-1month', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-1month', 'now'),
+            'total_rank_id' => $rank_id,
+            'continuous_rank_id' => $rank_id,
+            'recovery_rank_id' => $recovery_rank_id,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterMaking(function (Routine $routine) {
+            $routine_array = $routine->toArray();
+            $query['name'] = $routine_array['name'];
+            $query['user_id'] = $routine_array['user_id'];
+
+            $response = Routine::firstOrCreate(
+                $query,
+                $routine_array,
+            );
+
+            if ($response->wasRecentlyCreated) {
+                Record::factory(10)->make([
+                    'routine_id' => $response->id
+                ]);
+            }
+        });
     }
 }

@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
             'email' => config('const.GUEST_EMAIL'),
         ]);
 
-        $user1 = User::factory()->create([
+        User::factory()->create([
             'name' => 'そら',
             'email' => 'user1@test.com',
         ]);
 
-        $user2 = User::factory()->create([
+        User::factory()->create([
             'email' => 'user2@test.com',
         ]);
     }

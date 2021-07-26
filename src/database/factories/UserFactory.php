@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Routine;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-
 
 class UserFactory extends Factory
 {
@@ -30,17 +30,12 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function unverified()
+    public function configure()
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
+        return $this->afterCreating(function (User $user) {
+            Routine::factory(10)->make([
+                'user_id' => $user->id
+            ]);
         });
     }
 }
