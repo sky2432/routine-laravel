@@ -23,7 +23,7 @@ class RecordFactory extends Factory
      */
     public function definition()
     {
-        $date = $this->faker->dateTimeBetween('-1week', 'now');
+        $date = $this->faker->dateTimeBetween('-2week', 'now');
 
         return [
             'routine_id' => Routine::pluck('id')->random(),

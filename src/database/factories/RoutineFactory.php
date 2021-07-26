@@ -40,7 +40,7 @@ class RoutineFactory extends Factory
         $rank_id = Rank::where('name', '見習い')->value('id');
         $recovery_rank_id = RecoveryRank::where('name', '見習い')->value('id');
 
-        $date = new Carbon('-8 days');
+        $date = new Carbon('-15 days');
 
         return [
             'name' => Arr::random($routines),
