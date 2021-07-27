@@ -12,8 +12,15 @@ Route::put('users/{user_id}/password', [UserController
 Route::apiResource('users', UserController::class)->except(['index', 'show']);
 
 // 認証
-Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::group([
+    'middleware' => ['auth:api'],
+    'prefix' => 'auth'
+], function ($router) {
+  Route::post('login', [AuthController::class, 'login'])->withoutMiddleware(['auth:api']);
+  Route::post('logout', [AuthController::class, 'logout']);
+  Route::post('refresh', [AuthController::class, 'refresh']);
+  Route::get('user', [AuthController::class, 'me']);
+});
 
 //習慣
 Route::apiResource('routines', RoutineController::class)->except('index');
@@ -21,4 +28,3 @@ Route::get('routines/{routine_id}/count', [RoutineController::class, 'countDays'
 
 //記録
 Route::apiResource('records', RecordController::class)->only(['store', 'destroy']);
-
