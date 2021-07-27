@@ -47,9 +47,7 @@ class RoutineController extends Controller
 
     public function countDays($routine_id)
     {
-        $data['all_days'] = CountService::countAllDays($routine_id);
-        [$data['continuous_days'], $data['highest_continuous_days']] = CountService::countContinuousDays($routine_id);
-        $data['recovery_count'] = CountService::countRecovery($routine_id);
+        $data = CountService::getAllCountData($routine_id);
 
         return response()->json([
             'data' => $data

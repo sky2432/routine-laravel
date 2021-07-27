@@ -44,10 +44,16 @@ class CountService
 
     public static function countAllDays($routine_id)
     {
-        $data = Record::where('routine_id', $routine_id)
-        ->count();
+        $data =  self::getDoneDays($routine_id);
+        
+        $count = 0;
+        foreach ($data as $key => $value) {
+            if($value !== 0) {
+                $count++;
+            }
+        }
 
-        return $data;
+        return $count;
     }
 
     public static function countContinuousDays($routine_id)
@@ -112,5 +118,14 @@ class CountService
         }
 
         return $recovery;
+    }
+
+    public static function getAllCountData($routine_id)
+    {
+        $data['all_days'] = self::countAllDays($routine_id);
+        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($routine_id);
+        $data['recovery_count'] = self::countRecovery($routine_id);
+
+        return $data;
     }
 }
