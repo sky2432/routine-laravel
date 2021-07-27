@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Record;
+use App\Services\CountService;
 use App\Services\RankService;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class RecordController extends Controller
         $item = new Record();
         $item->fill($request->all())->save();
 
-        RankService::checkAllRank($request->routine_id);
+        $this->updateCountAndRank($request->routine_id);
 
         return response()->json([
             'data' => $item
@@ -25,8 +26,14 @@ class RecordController extends Controller
         $item = Record::find($record_id);
         Record::destroy($record_id);
 
-        RankService::checkAllRank($item->routine_id);
+        $this->updateCountAndRank($item->routine_id);
 
         return response()->json([], 204);
+    }
+
+    public function updateCountAndRank($routine_id)
+    {
+        CountService::updateRoutineCountData($routine_id);
+        RankService::checkAllRank($routine_id);
     }
 }

@@ -11,6 +11,16 @@ use DatePeriod;
 
 class CountService
 {
+    public static function updateRoutineCountData($routine_id)
+    {
+        $data = self::getAllCountData($routine_id);
+        $item = Routine::find($routine_id);
+        $item->total_days = $data['all_days'];
+        $item->continuous_days = $data['continuous_days'];
+        $item->recovery_count = $data['recovery_count'];
+        $item->save();
+    }
+
     public static function getAllCountData($routine_id)
     {
         $data['all_days'] = self::countAllDays($routine_id);
@@ -26,7 +36,7 @@ class CountService
 
         $count = 0;
         foreach ($data as $key => $value) {
-            if($value !== 0) {
+            if ($value !== 0) {
                 $count++;
             }
         }
