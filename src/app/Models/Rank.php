@@ -18,4 +18,8 @@ class Rank extends Model
     {
         return $this->hasMany(Routine::class, 'continuous_rank_id', 'id');
     }
+
+    public function scopeDefaultId($query) {
+        return $query->where('name', '見習い')->value('id');
+    }
 }

@@ -37,8 +37,8 @@ class RoutineFactory extends Factory
             '散歩'
         ];
 
-        $rank_id = Rank::where('name', '見習い')->value('id');
-        $recovery_rank_id = RecoveryRank::where('name', '見習い')->value('id');
+        $rank_id = Rank::DefaultId();
+        $recovery_rank_id = RecoveryRank::DefaultId();
 
         $date = new Carbon('-15 days');
 

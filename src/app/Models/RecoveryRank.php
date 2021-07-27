@@ -17,4 +17,8 @@ class RecoveryRank extends Model
     {
         return $this->hasMany(Routine::class, 'recovery_rank_id', 'id');
     }
+
+    public function scopeDefaultId($query) {
+        return $query->where('name', '見習い')->value('id');
+    }
 }

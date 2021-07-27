@@ -11,33 +11,11 @@ use DatePeriod;
 
 class CountService
 {
-    public static function getDoneDays($routine_id)
+    public static function getAllCountData($routine_id)
     {
-        $startDate = Routine::where('id', $routine_id)->value('created_at');
-        $begin = Carbon::create($startDate->year, $startDate->month, $startDate->day);
-
-        $today = Carbon::today();
-        $end = $today->copy()->endOfDay();
-
-        $period = new DatePeriod($begin, new DateInterval('P1D'), $end);//$begin以上$rangeEnd未満
-
-        $dbData = [];
-
-        foreach ($period as $date) {
-            $range[$date->format("Y-m-d")] = 0;
-        }
-
-        $data = Record::where('routine_id', $routine_id)
-        ->whereBetween('created_at', [$begin, $end])//$begin以上$dbEnd以下
-        ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as day'), DB::raw('count(created_at) as count'))
-        ->groupBy('day')
-        ->get();
-
-        foreach ($data as $val) {
-            $dbData[$val->day] = $val->count;
-        }
-
-        $data = array_replace($range, $dbData);
+        $data['all_days'] = self::countAllDays($routine_id);
+        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($routine_id);
+        $data['recovery_count'] = self::countRecovery($routine_id);
 
         return $data;
     }
@@ -45,7 +23,7 @@ class CountService
     public static function countAllDays($routine_id)
     {
         $data =  self::getDoneDays($routine_id);
-        
+
         $count = 0;
         foreach ($data as $key => $value) {
             if($value !== 0) {
@@ -120,11 +98,33 @@ class CountService
         return $recovery;
     }
 
-    public static function getAllCountData($routine_id)
+    public static function getDoneDays($routine_id)
     {
-        $data['all_days'] = self::countAllDays($routine_id);
-        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($routine_id);
-        $data['recovery_count'] = self::countRecovery($routine_id);
+        $startDate = Routine::where('id', $routine_id)->value('created_at');
+        $begin = Carbon::create($startDate->year, $startDate->month, $startDate->day);
+
+        $today = Carbon::today();
+        $end = $today->copy()->endOfDay();
+
+        $period = new DatePeriod($begin, new DateInterval('P1D'), $end);//$begin以上$rangeEnd未満
+
+        $dbData = [];
+
+        foreach ($period as $date) {
+            $range[$date->format("Y-m-d")] = 0;
+        }
+
+        $data = Record::where('routine_id', $routine_id)
+        ->whereBetween('created_at', [$begin, $end])//$begin以上$dbEnd以下
+        ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as day'), DB::raw('count(created_at) as count'))
+        ->groupBy('day')
+        ->get();
+
+        foreach ($data as $val) {
+            $dbData[$val->day] = $val->count;
+        }
+
+        $data = array_replace($range, $dbData);
 
         return $data;
     }
