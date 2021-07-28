@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rank;
 use App\Models\RecoveryRank;
 use App\Models\Routine;
+use App\Services\RecordService;
 use Illuminate\Http\Request;
 
 class RoutineController extends Controller
@@ -27,8 +28,10 @@ class RoutineController extends Controller
     {
         $items = Routine::with(['totalRank', 'continuousRank', 'recoveryRank'])->where('user_id', $user_id)->get();
 
+        $routines = RecordService::insertTodayRecord($items);
+
         return response()->json([
-            'data' => $items
+            'data' => $routines
         ], 200);
     }
 
