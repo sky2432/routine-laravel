@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Routine;
 use App\Models\User;
+use App\Services\CountService;
+use App\Services\RankService;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -27,5 +30,12 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'email' => 'user2@test.com',
         ]);
+
+        $routines = Routine::all();
+        foreach ($routines as $routine) {
+            CountService::updateRoutineCountData($routine->id);
+            RankService::checkAllRank($routine->id);
+        }
+
     }
 }

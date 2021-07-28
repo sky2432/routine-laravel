@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Rank;
+use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Services\CountService;
 
@@ -158,7 +159,7 @@ class RankService
 
     public static function getRecoveryRankIds()
     {
-        $items = Rank::all();
+        $items = RecoveryRank::all();
 
         foreach ($items as $item) {
             if ($item->name === '見習い') {

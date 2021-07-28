@@ -40,7 +40,7 @@ class RoutineFactory extends Factory
         $rank_id = Rank::DefaultId();
         $recovery_rank_id = RecoveryRank::DefaultId();
 
-        $date = new Carbon('-15 days');
+        $created_at = new Carbon('-1 year');
 
         return [
             'name' => Arr::random($routines),
@@ -48,8 +48,8 @@ class RoutineFactory extends Factory
             'total_rank_id' => $rank_id,
             'continuous_rank_id' => $rank_id,
             'recovery_rank_id' => $recovery_rank_id,
-            'created_at' => $date,
-            'updated_at' => $date,
+            'created_at' => $created_at,
+            'updated_at' => $created_at,
         ];
     }
 
@@ -66,7 +66,9 @@ class RoutineFactory extends Factory
             );
 
             if ($response->wasRecentlyCreated) {
-                Record::factory(10)->make([
+                $num = $this->faker->randomElement([30, 180, 270, 450]);
+
+                Record::factory($num)->make([
                     'routine_id' => $response->id
                 ]);
             }

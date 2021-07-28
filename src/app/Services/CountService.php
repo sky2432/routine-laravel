@@ -23,19 +23,18 @@ class CountService
 
     public static function getAllCountData($routine_id)
     {
-        $data['all_days'] = self::countAllDays($routine_id);
-        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($routine_id);
-        $data['recovery_count'] = self::countRecovery($routine_id);
+        $done_days =  self::getDoneDays($routine_id);
+        $data['all_days'] = self::countAllDays($done_days);
+        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($done_days);
+        $data['recovery_count'] = self::countRecovery($done_days);
 
         return $data;
     }
 
-    public static function countAllDays($routine_id)
+    public static function countAllDays($done_days)
     {
-        $data =  self::getDoneDays($routine_id);
-
         $count = 0;
-        foreach ($data as $key => $value) {
+        foreach ($done_days as $key => $value) {
             if ($value !== 0) {
                 $count++;
             }
@@ -44,14 +43,12 @@ class CountService
         return $count;
     }
 
-    public static function countContinuousDays($routine_id)
+    public static function countContinuousDays($done_days)
     {
-        $data =  self::getDoneDays($routine_id);
-
         $count = 0;
         $highestCount = 0;
         $today = Carbon::today();
-        foreach ($data as $key => $value) {
+        foreach ($done_days as $key => $value) {
             $dbDate = new Carbon($key);
             if ($dbDate->eq($today)) {
                 if ($value !== 0) {
@@ -79,15 +76,13 @@ class CountService
         return [$count, $highestCount];
     }
 
-    public static function countRecovery($routine_id)
+    public static function countRecovery($done_days)
     {
-        $data =  self::getDoneDays($routine_id);
-
         $first = false;
         $status = false;
         $count = 0;
         $recovery = 0;
-        foreach ($data as $key => $value) {
+        foreach ($done_days as $key => $value) {
             if ($value === 1 && $first === false) {
                 $first = true;
             }
@@ -135,6 +130,10 @@ class CountService
         }
 
         $data = array_replace($range, $dbData);
+
+        // デバック用↓
+        // echo $routine_id;
+        // dump($data);
 
         return $data;
     }

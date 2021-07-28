@@ -24,7 +24,6 @@ Route::group([
 
 //習慣
 Route::apiResource('routines', RoutineController::class)->except('index');
-Route::get('routines/{routine_id}/count', [RoutineController::class, 'countDays']);
 
 //記録
 Route::apiResource('records', RecordController::class)->only(['store', 'destroy']);
