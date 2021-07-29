@@ -14,10 +14,11 @@ class RecordController extends Controller
         $item = new Record();
         $item->fill($request->all())->save();
 
-        $this->updateCountAndRank($request->routine_id);
+        $rank_up = $this->updateCountAndRank($request->routine_id);
 
         return response()->json([
-            'data' => $item
+            'data' => $item,
+            'rank_up' => $rank_up,
         ], 200);
     }
 
@@ -34,6 +35,8 @@ class RecordController extends Controller
     public function updateCountAndRank($routine_id)
     {
         CountService::updateRoutineCountData($routine_id);
-        RankService::checkAllRank($routine_id);
+        $rank_up = RankService::checkAllRank($routine_id);
+
+        return $rank_up;
     }
 }

@@ -12,46 +12,36 @@ class RankService
     public static function checkAllRank($routine_id)
     {
         $count_data = CountService::getAllCountData($routine_id);
-        self::checkTotalDaysRank($routine_id, $count_data['all_days']);
-        self::checkContinuousDaysRank($routine_id, $count_data['highest_continuous_days']);
-        self::checkRecoveryRank($routine_id, $count_data['recovery_count']);
+        $rank_up['total_rank'] = self::checkTotalDaysRank($routine_id, $count_data['all_days']);
+        $rank_up['highest_continuous_rank'] = self::checkContinuousDaysRank($routine_id, $count_data['highest_continuous_days']);
+        $rank_up['recovery_rank'] = self::checkRecoveryRank($routine_id, $count_data['recovery_count']);
+
+        return $rank_up;
     }
 
     public static function checkTotalDaysRank($routine_id, $total_days)
     {
         $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
-        if ($total_days >= 365) {
-            $item->update(['total_rank_id' => $rankIds['god']]);
-            return;
-        }
-        if ($total_days >= 270) {
-            $item->update(['total_rank_id' => $rankIds['emperor']]);
-            return;
-        }
-        if ($total_days >= 180) {
-            $item->update(['total_rank_id' => $rankIds['king']]);
-            return;
-        }
-        if ($total_days >= 90) {
-            $item->update(['total_rank_id' => $rankIds['saint']]);
-            return;
-        }
-        if ($total_days >= 30) {
-            $item->update(['total_rank_id' => $rankIds['advanced']]);
-            return;
-        }
-        if ($total_days >= 14) {
-            $item->update(['total_rank_id' => $rankIds['intermediate']]);
-            return;
-        }
-        if ($total_days >= 7) {
-            $item->update(['total_rank_id' => $rankIds['beginner']]);
-            return;
-        }
-        if ($total_days >= 0) {
-            $item->update(['total_rank_id' => $rankIds['apprentice']]);
-            return;
+        $data = [
+            ['days' => 365, 'rank' => 'god'],
+            ['days' => 270, 'rank' => 'emperor'],
+            ['days' => 180, 'rank' => 'king'],
+            ['days' => 90, 'rank' => 'saint'],
+            ['days' => 30, 'rank' => 'advanced'],
+            ['days' => 14, 'rank' => 'intermediate'],
+            ['days' => 7, 'rank' => 'beginner'],
+            ['days' => 0, 'rank' => 'apprentice'],
+        ];
+
+        foreach ($data as $value) {
+            if ($total_days >= $value['days']) {
+                if ($item->total_rank_id === $rankIds[$value['rank']]) {
+                    return false;
+                }
+                $item->update(['total_rank_id' => $rankIds[$value['rank']]]);
+                return true;
+            }
         }
     }
 
@@ -59,37 +49,26 @@ class RankService
     {
         $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
-        if ($continuous_days >= 90) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['god']]);
-            return;
-        }
-        if ($continuous_days >= 60) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['emperor']]);
-            return;
-        }
-        if ($continuous_days >= 30) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['king']]);
-            return;
-        }
-        if ($continuous_days >= 21) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['saint']]);
-            return;
-        }
-        if ($continuous_days >= 14) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['advanced']]);
-            return;
-        }
-        if ($continuous_days >= 7) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['intermediate']]);
-            return;
-        }
-        if ($continuous_days >= 3) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['beginner']]);
-            return;
-        }
-        if ($continuous_days >= 0) {
-            $item->update(['highest_continuous_rank_id' => $rankIds['apprentice']]);
-            return;
+
+        $data = [
+            ['days' => 90, 'rank' => 'god'],
+            ['days' => 60, 'rank' => 'emperor'],
+            ['days' => 30, 'rank' => 'king'],
+            ['days' => 21, 'rank' => 'saint'],
+            ['days' => 14, 'rank' => 'advanced'],
+            ['days' => 7, 'rank' => 'intermediate'],
+            ['days' => 3, 'rank' => 'beginner'],
+            ['days' => 0, 'rank' => 'apprentice'],
+        ];
+
+        foreach ($data as $value) {
+            if ($continuous_days >= $value['days']) {
+                if ($item->highest_continuous_rank_id === $rankIds[$value['rank']]) {
+                    return false;
+                }
+                $item->update(['highest_continuous_rank_id' => $rankIds[$value['rank']]]);
+                return true;
+            }
         }
     }
 
@@ -97,29 +76,24 @@ class RankService
     {
         $rankIds = self::getRecoveryRankIds();
         $item = Routine::find($routine_id);
-        if ($recovery_count >= 15) {
-            $item->update(['recovery_rank_id' => $rankIds['immortal']]);
-            return;
-        }
-        if ($recovery_count >= 12) {
-            $item->update(['recovery_rank_id' => $rankIds['rebirth']]);
-            return;
-        }
-        if ($recovery_count >= 9) {
-            $item->update(['recovery_rank_id' => $rankIds['resuscitation']]);
-            return;
-        }
-        if ($recovery_count >= 6) {
-            $item->update(['recovery_rank_id' => $rankIds['persistence']]);
-            return;
-        }
-        if ($recovery_count >= 3) {
-            $item->update(['recovery_rank_id' => $rankIds['revival']]);
-            return;
-        }
-        if ($recovery_count >= 0) {
-            $item->update(['recovery_rank_id' => $rankIds['apprentice']]);
-            return;
+
+        $data = [
+            ['days' => 15, 'rank' => 'immortal'],
+            ['days' => 12, 'rank' => 'rebirth'],
+            ['days' => 9, 'rank' => 'resuscitation'],
+            ['days' => 6, 'rank' => 'persistence'],
+            ['days' => 3, 'rank' => 'revival'],
+            ['days' => 0, 'rank' => 'apprentice'],
+        ];
+
+        foreach ($data as $value) {
+            if ($recovery_count >= $value['days']) {
+                if ($item->recovery_rank_id === $rankIds[$value['rank']]) {
+                    return false;
+                }
+                $item->update(['recovery_rank_id' => $rankIds[$value['rank']]]);
+                return true;
+            }
         }
     }
 
@@ -127,30 +101,23 @@ class RankService
     {
         $items = Rank::all();
 
+        $data = [
+            ['name' => '見習い', 'key' => 'apprentice'],
+            ['name' => '初級', 'key' => 'beginner'],
+            ['name' => '中級', 'key' => 'intermediate'],
+            ['name' => '上級', 'key' => 'advanced'],
+            ['name' => '聖級', 'key' => 'saint'],
+            ['name' => '王級', 'key' => 'king'],
+            ['name' => '帝級', 'key' => 'emperor'],
+            ['name' => '神級', 'key' => 'god'],
+        ];
+
         foreach ($items as $item) {
-            if ($item->name === '見習い') {
-                $rankIds['apprentice'] = $item->id;
-            }
-            if ($item->name === '初級') {
-                $rankIds['beginner'] = $item->id;
-            }
-            if ($item->name === '中級') {
-                $rankIds['intermediate'] = $item->id;
-            }
-            if ($item->name === '上級') {
-                $rankIds['advanced'] = $item->id;
-            }
-            if ($item->name === '聖級') {
-                $rankIds['saint'] = $item->id;
-            }
-            if ($item->name === '王級') {
-                $rankIds['king'] = $item->id;
-            }
-            if ($item->name === '帝級') {
-                $rankIds['emperor'] = $item->id;
-            }
-            if ($item->name === '神級') {
-                $rankIds['god'] = $item->id;
+            foreach ($data as $value) {
+                if ($item->name === $value['name']) {
+                    $rankIds[$value['key']] = $item->id;
+                    break;
+                }
             }
         }
 
@@ -161,24 +128,21 @@ class RankService
     {
         $items = RecoveryRank::all();
 
+        $data = [
+            ['name' => '見習い', 'key' => 'apprentice'],
+            ['name' => '復活', 'key' => 'revival'],
+            ['name' => '不屈', 'key' => 'persistence'],
+            ['name' => '蘇生', 'key' => 'resuscitation'],
+            ['name' => '転生', 'key' => 'rebirth'],
+            ['name' => '不死', 'key' => 'immortal'],
+        ];
+
         foreach ($items as $item) {
-            if ($item->name === '見習い') {
-                $rankIds['apprentice'] = $item->id;
-            }
-            if ($item->name === '復活') {
-                $rankIds['revival'] = $item->id;
-            }
-            if ($item->name === '不屈') {
-                $rankIds['persistence'] = $item->id;
-            }
-            if ($item->name === '蘇生') {
-                $rankIds['resuscitation'] = $item->id;
-            }
-            if ($item->name === '転生') {
-                $rankIds['rebirth'] = $item->id;
-            }
-            if ($item->name === '不死') {
-                $rankIds['immortal'] = $item->id;
+            foreach ($data as $value) {
+                if ($item->name === $value['name']) {
+                    $rankIds[$value['key']] = $item->id;
+                    break;
+                }
             }
         }
 
