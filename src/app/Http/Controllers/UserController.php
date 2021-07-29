@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +34,8 @@ class UserController extends Controller
     public function updatePassword(Request $request, $user_id)
     {
         $item = User::find($user_id);
+        UpdatePasswordRequest::rules($request, $item);
+
         $item->password = Hash::make($request->new_password);
         $item->save();
 
