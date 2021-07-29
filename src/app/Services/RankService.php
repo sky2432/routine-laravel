@@ -60,35 +60,35 @@ class RankService
         $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
         if ($continuous_days >= 90) {
-            $item->update(['continuous_rank_id' => $rankIds['god']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['god']]);
             return;
         }
         if ($continuous_days >= 60) {
-            $item->update(['continuous_rank_id' => $rankIds['emperor']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['emperor']]);
             return;
         }
         if ($continuous_days >= 30) {
-            $item->update(['continuous_rank_id' => $rankIds['king']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['king']]);
             return;
         }
         if ($continuous_days >= 21) {
-            $item->update(['continuous_rank_id' => $rankIds['saint']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['saint']]);
             return;
         }
         if ($continuous_days >= 14) {
-            $item->update(['continuous_rank_id' => $rankIds['advanced']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['advanced']]);
             return;
         }
         if ($continuous_days >= 7) {
-            $item->update(['continuous_rank_id' => $rankIds['intermediate']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['intermediate']]);
             return;
         }
         if ($continuous_days >= 3) {
-            $item->update(['continuous_rank_id' => $rankIds['beginner']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['beginner']]);
             return;
         }
         if ($continuous_days >= 0) {
-            $item->update(['continuous_rank_id' => $rankIds['apprentice']]);
+            $item->update(['highest_continuous_rank_id' => $rankIds['apprentice']]);
             return;
         }
     }

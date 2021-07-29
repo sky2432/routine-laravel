@@ -28,9 +28,9 @@ class Routine extends Model
         return $this->belongsTo(Rank::class, 'total_rank_id', 'id');
     }
 
-    public function continuousRank()
+    public function highestContinuousRank()
     {
-        return $this->belongsTo(Rank::class, 'continuous_rank_id', 'id');
+        return $this->belongsTo(Rank::class, 'highest_continuous_rank_id', 'id');
     }
 
     public function recoveryRank()

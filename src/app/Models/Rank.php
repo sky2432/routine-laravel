@@ -16,7 +16,7 @@ class Rank extends Model
 
     public function continuousRoutines()
     {
-        return $this->hasMany(Routine::class, 'continuous_rank_id', 'id');
+        return $this->hasMany(Routine::class, 'highest_continuous_rank_id', 'id');
     }
 
     public function scopeDefaultId($query) {

@@ -36,6 +36,5 @@ class UserSeeder extends Seeder
             CountService::updateRoutineCountData($routine->id);
             RankService::checkAllRank($routine->id);
         }
-
     }
 }

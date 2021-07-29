@@ -15,7 +15,7 @@ class RoutineController extends Controller
         $item = new Routine;
         $item->fill($request->all());
         $item->total_rank_id = Rank::DefaultId();
-        $item->continuous_rank_id = Rank::DefaultId();
+        $item->highest_continuous_rank_id = Rank::DefaultId();
         $item->recovery_rank_id = RecoveryRank::DefaultId();
         $item->save();
 
@@ -26,7 +26,7 @@ class RoutineController extends Controller
 
     public function show($user_id)
     {
-        $items = Routine::with(['totalRank', 'continuousRank', 'recoveryRank'])->where('user_id', $user_id)->get();
+        $items = Routine::with(['totalRank', 'highestContinuousRank', 'recoveryRank'])->where('user_id', $user_id)->get();
 
         $routines = RecordService::insertTodayRecord($items);
 

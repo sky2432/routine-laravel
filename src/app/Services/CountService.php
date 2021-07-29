@@ -17,6 +17,7 @@ class CountService
         $item = Routine::find($routine_id);
         $item->total_days = $data['all_days'];
         $item->continuous_days = $data['continuous_days'];
+        $item->highest_continuous_days = $data['highest_continuous_days'];
         $item->recovery_count = $data['recovery_count'];
         $item->save();
     }

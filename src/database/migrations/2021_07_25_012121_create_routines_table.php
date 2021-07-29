@@ -19,9 +19,10 @@ class CreateRoutinesTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('total_days')->default(0);
             $table->unsignedBigInteger('continuous_days')->default(0);
+            $table->unsignedBigInteger('highest_continuous_days')->default(0);
             $table->unsignedBigInteger('recovery_count')->default(0);
             $table->foreignId('total_rank_id')->constrained('ranks');
-            $table->foreignId('continuous_rank_id')->constrained('ranks');
+            $table->foreignId('highest_continuous_rank_id')->constrained('ranks');
             $table->foreignId('recovery_rank_id')->constrained();
             $table->timestamps();
         });

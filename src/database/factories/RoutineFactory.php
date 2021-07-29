@@ -46,7 +46,7 @@ class RoutineFactory extends Factory
             'name' => Arr::random($routines),
             'user_id' => User::pluck('id')->random(),
             'total_rank_id' => $rank_id,
-            'continuous_rank_id' => $rank_id,
+            'highest_continuous_rank_id' => $rank_id,
             'recovery_rank_id' => $recovery_rank_id,
             'created_at' => $created_at,
             'updated_at' => $created_at,
