@@ -15,7 +15,7 @@ class CreateRoutinesTable extends Migration
     {
         Schema::create('routines', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('total_days')->default(0);
             $table->unsignedBigInteger('continuous_days')->default(0);
