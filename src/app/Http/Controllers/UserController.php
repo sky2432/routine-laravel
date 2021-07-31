@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -47,6 +48,20 @@ class UserController extends Controller
 
         return response()->json([
             'data' => $item
+        ], 200);
+    }
+
+    public function updateImage(Request $request, $user_id)
+    {
+        $item = User::find($user_id);
+        ImageService::deleteImage($item->image_url);
+
+        $url = ImageService::uploadImage($request);
+        $item->image_url = $url;
+        $item->save();
+
+        return response()->json([
+            'data' => $item,
         ], 200);
     }
 

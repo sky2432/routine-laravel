@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 // ユーザー
 Route::put('users/{user_id}/password', [UserController
 ::class, 'updatePassword'])->name('users.password.update');
+Route::put('users/{user_id}/image', [UserController
+::class, 'updateImage'])->name('users.image.update');
 Route::apiResource('users', UserController::class)->except(['index', 'show']);
 
 Route::group([
