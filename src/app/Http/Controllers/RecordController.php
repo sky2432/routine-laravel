@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 
 class RecordController extends Controller
 {
+    public function show($routine_id)
+    {
+        $items = Record::where('routine_id', $routine_id)->get();
+
+        return response()->json([
+            'data' => $items
+        ], 200);
+    }
+
+
     public function store(Request $request)
     {
         $item = new Record();

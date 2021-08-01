@@ -22,11 +22,11 @@ Route::group([
   ], function () {
       Route::post('login', [AuthController::class, 'login'])->withoutMiddleware(['auth:api']);
       Route::post('logout', [AuthController::class, 'logout']);
-      Route::post('refresh', [AuthController::class, 'refresh']);
+      Route::post('refresh', [AuthController::class, 'refresh'])->withoutMiddleware(['auth:api']);
       Route::get('user', [AuthController::class, 'me']);
   });
     // 記録
-    Route::apiResource('records', RecordController::class)->only(['store', 'destroy']);
+    Route::apiResource('records', RecordController::class)->only(['show', 'store', 'destroy']);
 
     // 習慣
     Route::apiResource('routines', RoutineController::class)->except('index');
