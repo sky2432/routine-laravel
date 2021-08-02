@@ -47,7 +47,7 @@ class RoutineController extends Controller
     public function update(Request $request, $routine_id)
     {
         $item = Routine::find($routine_id);
-        $item->update(['name', $request->name]);
+        $item->update(['name' => $request->name]);
 
         return response()->json([
             'data' => $item
