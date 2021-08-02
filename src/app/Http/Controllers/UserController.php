@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateNameEmailRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 use App\Services\ImageService;
@@ -18,6 +20,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        RegisterRequest::rules($request, 'users');
+
         $item = new User;
         $item->password = Hash::make($request->password);
         $item->fill($request->all())->save();
@@ -31,6 +35,8 @@ class UserController extends Controller
     public function update(Request $request, $user_id)
     {
         $item = User::find($user_id);
+        UpdateNameEmailRequest::rules($request, $user_id, 'users', $item);
+
         $item->update($request->all());
 
         return response()->json([
