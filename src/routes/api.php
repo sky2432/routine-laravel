@@ -29,5 +29,7 @@ Route::group([
     Route::apiResource('records', RecordController::class)->only(['show', 'store', 'destroy']);
 
     // 習慣
+    Route::post('routines/archive', [RoutineController::class, 'updateArchive'])->name('routines.archive.update');
+    Route::get('users/{user_id}/routines/archive', [RoutineController::class, 'showArchive'])->name('routines.archive.update');
     Route::apiResource('routines', RoutineController::class)->except('index');
 });

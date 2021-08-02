@@ -26,7 +26,7 @@ class RoutineController extends Controller
 
     public function show($user_id)
     {
-        $items = Routine::with(['totalRank', 'highestContinuousRank', 'recoveryRank'])->where('user_id', $user_id)->get();
+        $items = Routine::with(['totalRank', 'highestContinuousRank', 'recoveryRank'])->where('user_id', $user_id)->where('is_archive', false)->get();
 
         $routines = RecordService::insertTodayRecord($items);
 
@@ -35,11 +35,29 @@ class RoutineController extends Controller
         ], 200);
     }
 
+    public function showArchive($user_id)
+    {
+        $items = Routine::with(['totalRank', 'highestContinuousRank', 'recoveryRank'])->where('user_id', $user_id)->where('is_archive', true)->get();
+
+        return response()->json([
+            'data' => $items
+        ], 200);
+    }
+
     public function update(Request $request, $routine_id)
     {
         $item = Routine::find($routine_id);
-        $item->name = $request->name;
-        $item->save();
+        $item->update(['name', $request->name]);
+
+        return response()->json([
+            'data' => $item
+        ], 200);
+    }
+
+    public function updateArchive(Request $request)
+    {
+        $item = Routine::find($request->routine_id);
+        $item->update(['is_archive' => !$item->is_archive]);
 
         return response()->json([
             'data' => $item

@@ -24,6 +24,7 @@ class CreateRoutinesTable extends Migration
             $table->foreignId('total_rank_id')->constrained('ranks');
             $table->foreignId('highest_continuous_rank_id')->constrained('ranks');
             $table->foreignId('recovery_rank_id')->constrained();
+            $table->boolean('is_archive')->default(false);
             $table->timestamps();
         });
     }
