@@ -23,7 +23,7 @@ class RecordFactory extends Factory
      */
     public function definition()
     {
-        $created_at = $this->faker->dateTimeBetween('-1year', 'now');
+        $created_at = $this->faker->dateTimeBetween('-7month', 'now');
 
         return [
             'routine_id' => Routine::pluck('id')->random(),

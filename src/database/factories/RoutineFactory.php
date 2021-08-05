@@ -34,13 +34,16 @@ class RoutineFactory extends Factory
             '瞑想',
             'ヨガ',
             '早起き',
-            '散歩'
+            '散歩',
+            '断食',
+            'ジョギング',
+            '日記'
         ];
 
         $rank_id = Rank::DefaultId();
         $recovery_rank_id = RecoveryRank::DefaultId();
 
-        $created_at = new Carbon('-1 year');
+        $created_at = new Carbon('-7 month');
 
         return [
             'name' => Arr::random($routines),
@@ -66,7 +69,7 @@ class RoutineFactory extends Factory
             );
 
             if ($response->wasRecentlyCreated) {
-                $num = $this->faker->randomElement([30, 180, 270, 450]);
+                $num = $this->faker->randomElement([14, 30, 60, 90, 120, 150, 210, 365]);
 
                 Record::factory($num)->make([
                     'routine_id' => $response->id

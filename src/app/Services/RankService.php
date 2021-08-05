@@ -41,10 +41,10 @@ class RankService
         $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
         $data = [
-            ['days' => 365, 'rank' => 'god'],
-            ['days' => 270, 'rank' => 'emperor'],
-            ['days' => 180, 'rank' => 'king'],
-            ['days' => 90, 'rank' => 'saint'],
+            ['days' => 180, 'rank' => 'god'],
+            ['days' => 120, 'rank' => 'emperor'],
+            ['days' => 90, 'rank' => 'king'],
+            ['days' => 60, 'rank' => 'saint'],
             ['days' => 30, 'rank' => 'advanced'],
             ['days' => 14, 'rank' => 'intermediate'],
             ['days' => 7, 'rank' => 'beginner'],
@@ -103,11 +103,11 @@ class RankService
         $item = Routine::find($routine_id);
 
         $data = [
-            ['days' => 15, 'rank' => 'immortal'],
-            ['days' => 12, 'rank' => 'rebirth'],
-            ['days' => 9, 'rank' => 'resuscitation'],
-            ['days' => 6, 'rank' => 'persistence'],
-            ['days' => 3, 'rank' => 'revival'],
+            ['days' => 12, 'rank' => 'immortal'],
+            ['days' => 9, 'rank' => 'rebirth'],
+            ['days' => 6, 'rank' => 'resuscitation'],
+            ['days' => 3, 'rank' => 'persistence'],
+            ['days' => 1, 'rank' => 'revival'],
             ['days' => 0, 'rank' => 'apprentice'],
         ];
 
