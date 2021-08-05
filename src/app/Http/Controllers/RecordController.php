@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Record;
+use App\Models\Routine;
 use App\Services\CountService;
 use App\Services\RankService;
 use Illuminate\Http\Request;
@@ -25,9 +26,11 @@ class RecordController extends Controller
         $item->fill($request->all())->save();
 
         $rank_up = $this->updateCountAndRank($request->routine_id);
+        
+        $routine_name = Routine::where('id', $request->routine_id)->value('name');
 
         return response()->json([
-            'data' => $item,
+            'routine_name' => $routine_name,
             'rank_up' => $rank_up,
         ], 200);
     }

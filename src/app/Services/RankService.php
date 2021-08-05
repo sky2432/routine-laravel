@@ -12,9 +12,26 @@ class RankService
     public static function checkAllRank($routine_id)
     {
         $count_data = CountService::getAllCountData($routine_id);
-        $rank_up['total_rank'] = self::checkTotalDaysRank($routine_id, $count_data['all_days']);
-        $rank_up['highest_continuous_rank'] = self::checkContinuousDaysRank($routine_id, $count_data['highest_continuous_days']);
-        $rank_up['recovery_rank'] = self::checkRecoveryRank($routine_id, $count_data['recovery_count']);
+        $rank_up = [];
+
+        $total_res = self::checkTotalDaysRank(
+            $routine_id,
+            $count_data['all_days']
+        );
+        if ($total_res) {
+            $rank_up[] = $total_res;
+        }
+
+        $continuous_res = self::checkContinuousDaysRank($routine_id, $count_data['highest_continuous_days']);
+        if ($continuous_res) {
+            $rank_up[] = $continuous_res;
+        }
+
+        $recovery_res = self::checkRecoveryRank($routine_id, $count_data['recovery_count']);
+        if ($recovery_res) {
+            $rank_up[] = $recovery_res;
+        }
+
 
         return $rank_up;
     }
@@ -37,10 +54,14 @@ class RankService
         foreach ($data as $value) {
             if ($total_days >= $value['days']) {
                 if ($item->total_rank_id === $rankIds[$value['rank']]) {
-                    return false;
+                    return;
                 }
                 $item->update(['total_rank_id' => $rankIds[$value['rank']]]);
-                return true;
+
+                $rank['name'] = '累計日数';
+                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+
+                return $rank;
             }
         }
     }
@@ -64,10 +85,14 @@ class RankService
         foreach ($data as $value) {
             if ($continuous_days >= $value['days']) {
                 if ($item->highest_continuous_rank_id === $rankIds[$value['rank']]) {
-                    return false;
+                    return;
                 }
                 $item->update(['highest_continuous_rank_id' => $rankIds[$value['rank']]]);
-                return true;
+
+                $rank['name'] = '最高継続日数';
+                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+
+                return $rank;
             }
         }
     }
@@ -89,10 +114,14 @@ class RankService
         foreach ($data as $value) {
             if ($recovery_count >= $value['days']) {
                 if ($item->recovery_rank_id === $rankIds[$value['rank']]) {
-                    return false;
+                    return;
                 }
                 $item->update(['recovery_rank_id' => $rankIds[$value['rank']]]);
-                return true;
+
+                $rank['name'] = 'リカバリー';
+                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+
+                return $rank;
             }
         }
     }
