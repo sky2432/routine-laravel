@@ -41,14 +41,14 @@ class RankService
         $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
         $data = [
-            ['days' => 180, 'rank' => 'god'],
-            ['days' => 120, 'rank' => 'emperor'],
-            ['days' => 90, 'rank' => 'king'],
-            ['days' => 60, 'rank' => 'saint'],
-            ['days' => 30, 'rank' => 'advanced'],
-            ['days' => 14, 'rank' => 'intermediate'],
-            ['days' => 7, 'rank' => 'beginner'],
-            ['days' => 0, 'rank' => 'apprentice'],
+            ['days' => 180, 'rank' => config('const.RANK')[7]],
+            ['days' => 120, 'rank' => config('const.RANK')[6]],
+            ['days' => 90, 'rank' => config('const.RANK')[5]],
+            ['days' => 60, 'rank' => config('const.RANK')[4]],
+            ['days' => 30, 'rank' => config('const.RANK')[3]],
+            ['days' => 14, 'rank' => config('const.RANK')[2]],
+            ['days' => 7, 'rank' => config('const.RANK')[1]],
+            ['days' => 0, 'rank' => config('const.RANK')[0]],
         ];
 
         foreach ($data as $value) {
@@ -72,14 +72,14 @@ class RankService
         $item = Routine::find($routine_id);
 
         $data = [
-            ['days' => 90, 'rank' => 'god'],
-            ['days' => 60, 'rank' => 'emperor'],
-            ['days' => 30, 'rank' => 'king'],
-            ['days' => 21, 'rank' => 'saint'],
-            ['days' => 14, 'rank' => 'advanced'],
-            ['days' => 7, 'rank' => 'intermediate'],
-            ['days' => 3, 'rank' => 'beginner'],
-            ['days' => 0, 'rank' => 'apprentice'],
+            ['days' => 90, 'rank' => config('const.RANK')[7]],
+            ['days' => 60, 'rank' => config('const.RANK')[6]],
+            ['days' => 30, 'rank' => config('const.RANK')[5]],
+            ['days' => 21, 'rank' => config('const.RANK')[4]],
+            ['days' => 14, 'rank' => config('const.RANK')[3]],
+            ['days' => 7, 'rank' => config('const.RANK')[2]],
+            ['days' => 3, 'rank' => config('const.RANK')[1]],
+            ['days' => 0, 'rank' => config('const.RANK')[0]],
         ];
 
         foreach ($data as $value) {
@@ -128,23 +128,14 @@ class RankService
 
     public static function getRankIds()
     {
-        $items = Rank::all();
+        $ranks = Rank::all();
 
-        $data = [
-            ['name' => '見習い', 'key' => 'apprentice'],
-            ['name' => '初級', 'key' => 'beginner'],
-            ['name' => '中級', 'key' => 'intermediate'],
-            ['name' => '上級', 'key' => 'advanced'],
-            ['name' => '聖級', 'key' => 'saint'],
-            ['name' => '王級', 'key' => 'king'],
-            ['name' => '帝級', 'key' => 'emperor'],
-            ['name' => '神級', 'key' => 'god'],
-        ];
+        $rank_names = config('const.RANK');
 
-        foreach ($items as $item) {
-            foreach ($data as $value) {
-                if ($item->name === $value['name']) {
-                    $rankIds[$value['key']] = $item->id;
+        foreach ($ranks as $rank) {
+            foreach ($rank_names as $rank_name) {
+                if ($rank->name === $rank_name) {
+                    $rankIds[$rank_name] = $rank->id;
                     break;
                 }
             }

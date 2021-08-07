@@ -16,42 +16,42 @@ class RankSeeder extends Seeder
     {
         DB::table('ranks')->insert([
             [
-                'name' => '見習い',
+                'name' => config('const.RANK')[0],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '初級',
+                'name' => config('const.RANK')[1],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '中級',
+                'name' => config('const.RANK')[2],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '上級',
+                'name' => config('const.RANK')[3],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '聖級',
+                'name' => config('const.RANK')[4],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '王級',
+                'name' => config('const.RANK')[5],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '帝級',
+                'name' => config('const.RANK')[6],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => '神級',
+                'name' => config('const.RANK')[7],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

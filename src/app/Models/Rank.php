@@ -20,6 +20,6 @@ class Rank extends Model
     }
 
     public function scopeDefaultId($query) {
-        return $query->where('name', '見習い')->value('id');
+        return $query->where('name', config('const.RANK')[0])->value('id');
     }
 }
