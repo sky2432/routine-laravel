@@ -35,7 +35,7 @@ class Routine extends Model
 
     public function recoveryRank()
     {
-        return $this->belongsTo(RecoveryRank::class, 'recovery_rank_id', 'id');
+        return $this->belongsTo(Rank::class, 'recovery_rank_id', 'id');
     }
 
     public function scopeWithChildTable($query)

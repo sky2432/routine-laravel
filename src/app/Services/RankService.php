@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Rank;
-use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Services\CountService;
 
@@ -59,7 +58,7 @@ class RankService
                 $item->update(['total_rank_id' => $rankIds[$value['rank']]]);
 
                 $rank['name'] = '累計日数';
-                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+                $rank['rank_name'] = $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
 
                 return $rank;
             }
@@ -90,7 +89,7 @@ class RankService
                 $item->update(['highest_continuous_rank_id' => $rankIds[$value['rank']]]);
 
                 $rank['name'] = '最高継続日数';
-                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+                $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
 
                 return $rank;
             }
@@ -99,27 +98,30 @@ class RankService
 
     public static function checkRecoveryRank($routine_id, $recovery_count)
     {
-        $rankIds = self::getRecoveryRankIds();
+        $rankIds = self::getRankIds();
         $item = Routine::find($routine_id);
 
         $data = [
-            ['days' => 12, 'rank' => 'immortal'],
-            ['days' => 9, 'rank' => 'rebirth'],
-            ['days' => 6, 'rank' => 'resuscitation'],
-            ['days' => 3, 'rank' => 'persistence'],
-            ['days' => 1, 'rank' => 'revival'],
-            ['days' => 0, 'rank' => 'apprentice'],
+            ['count' => 18, 'rank' => config('const.RANK')[7]],
+            ['count' => 15, 'rank' => config('const.RANK')[6]],
+            ['count' => 12, 'rank' => config('const.RANK')[5]],
+            ['count' => 9, 'rank' => config('const.RANK')[4]],
+            ['count' => 6, 'rank' => config('const.RANK')[3]],
+            ['count' => 3, 'rank' => config('const.RANK')[2]],
+            ['count' => 1, 'rank' => config('const.RANK')[1]],
+            ['count' => 0, 'rank' => config('const.RANK')[0]],
         ];
 
+
         foreach ($data as $value) {
-            if ($recovery_count >= $value['days']) {
+            if ($recovery_count >= $value['count']) {
                 if ($item->recovery_rank_id === $rankIds[$value['rank']]) {
                     return;
                 }
                 $item->update(['recovery_rank_id' => $rankIds[$value['rank']]]);
 
                 $rank['name'] = 'リカバリー';
-                $rank['rank_name'] = Rank::where('id', $rankIds[$value['rank']])->value('name');
+                $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
 
                 return $rank;
             }
@@ -136,31 +138,6 @@ class RankService
             foreach ($rank_names as $rank_name) {
                 if ($rank->name === $rank_name) {
                     $rankIds[$rank_name] = $rank->id;
-                    break;
-                }
-            }
-        }
-
-        return $rankIds;
-    }
-
-    public static function getRecoveryRankIds()
-    {
-        $items = RecoveryRank::all();
-
-        $data = [
-            ['name' => '見習い', 'key' => 'apprentice'],
-            ['name' => '復活', 'key' => 'revival'],
-            ['name' => '不屈', 'key' => 'persistence'],
-            ['name' => '蘇生', 'key' => 'resuscitation'],
-            ['name' => '転生', 'key' => 'rebirth'],
-            ['name' => '不死', 'key' => 'immortal'],
-        ];
-
-        foreach ($items as $item) {
-            foreach ($data as $value) {
-                if ($item->name === $value['name']) {
-                    $rankIds[$value['key']] = $item->id;
                     break;
                 }
             }

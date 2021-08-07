@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RankSeeder::class,
-            RecoveryRankSeeder::class,
             UserSeeder::class,
         ]);
     }

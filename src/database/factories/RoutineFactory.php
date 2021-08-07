@@ -41,7 +41,6 @@ class RoutineFactory extends Factory
         ];
 
         $rank_id = Rank::DefaultId();
-        $recovery_rank_id = RecoveryRank::DefaultId();
 
         $created_at = new Carbon('-7 month');
 
@@ -50,7 +49,7 @@ class RoutineFactory extends Factory
             'user_id' => User::pluck('id')->random(),
             'total_rank_id' => $rank_id,
             'highest_continuous_rank_id' => $rank_id,
-            'recovery_rank_id' => $recovery_rank_id,
+            'recovery_rank_id' => $rank_id,
             'created_at' => $created_at,
             'updated_at' => $created_at,
         ];

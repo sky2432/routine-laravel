@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rank;
-use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Services\RecordService;
 use Illuminate\Http\Request;
@@ -14,9 +13,10 @@ class RoutineController extends Controller
     {
         $item = new Routine;
         $item->fill($request->all());
-        $item->total_rank_id = Rank::DefaultId();
-        $item->highest_continuous_rank_id = Rank::DefaultId();
-        $item->recovery_rank_id = RecoveryRank::DefaultId();
+        $default_id = Rank::DefaultId();
+        $item->total_rank_id = $default_id;
+        $item->highest_continuous_rank_id = $default_id;
+        $item->recovery_rank_id = $default_id;
         $item->save();
 
         return response()->json([
