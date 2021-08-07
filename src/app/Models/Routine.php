@@ -37,4 +37,9 @@ class Routine extends Model
     {
         return $this->belongsTo(RecoveryRank::class, 'recovery_rank_id', 'id');
     }
+
+    public function scopeWithChildTable($query)
+    {
+        return $query->with(['totalRank', 'highestContinuousRank', 'recoveryRank', 'records']);
+    }
 }
