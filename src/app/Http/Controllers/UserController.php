@@ -15,13 +15,18 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api')
-                 ->except(['store']);
+                 ->except(['confirm', 'store']);
+    }
+
+    public function confirm(Request $request)
+    {
+        RegisterRequest::rules($request, 'users');
+
+        return response()->json([], 200);
     }
 
     public function store(Request $request)
     {
-        RegisterRequest::rules($request, 'users');
-
         $item = new User;
         $item->password = Hash::make($request->password);
         $item->fill($request->all())->save();

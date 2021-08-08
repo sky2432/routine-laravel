@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ユーザー
+Route::post('users/confirm', [UserController::class, 'confirm'])->name('users.confirm');
 Route::put('users/{user_id}/password', [UserController
 ::class, 'updatePassword'])->name('users.password.update');
 Route::put('users/{user_id}/image', [UserController
