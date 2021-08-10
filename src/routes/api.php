@@ -31,8 +31,9 @@ Route::group([
     Route::group([
         'prefix' => 'users'
     ], function () {
-        Route::get('{user_id}/routines/archive', [RoutineController::class, 'showArchive'])->name('routines.archive.update');
+        Route::get('{user_id}/routines/rank/count', [RoutineController::class, 'getRankCount'])->name('routines.count.show');
         Route::post('routines/archive', [RoutineController::class, 'updateArchive'])->name('routines.archive.update');
+        Route::get('{user_id}/routines/archive', [RoutineController::class, 'showArchive'])->name('routines.archive.show');
         Route::get('{user_id}/routines', [RoutineController::class, 'show'])->name('routines.show');
         Route::apiResource('routines', RoutineController::class)->except(['index', 'show']);
     });

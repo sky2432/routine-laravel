@@ -11,6 +11,64 @@ use DatePeriod;
 
 class CountService
 {
+    public static function countRank($user_id)
+    {
+        $routines = Routine::where('user_id', $user_id)->get();
+        $rank_columns = ['total_rank_id', 'highest_continuous_rank_id', 'recovery_rank_id'];
+        $rankIds = RankService::getRankIds();
+
+        $ss = 0;
+        $s = 0;
+        $a = 0;
+        $b = 0;
+        $c = 0;
+        $d = 0;
+        $e = 0;
+        $f = 0;
+
+        foreach ($routines as $routine) {
+            foreach ($rank_columns as $rank_column) {
+                if ($routine->$rank_column === $rankIds['SS']) {
+                    $ss++;
+                }
+                if ($routine->$rank_column === $rankIds['S']) {
+                    $s++;
+                }
+                if ($routine->$rank_column === $rankIds['A']) {
+                    $a++;
+                }
+                if ($routine->$rank_column === $rankIds['B']) {
+                    $b++;
+                }
+                if ($routine->$rank_column === $rankIds['C']) {
+                    $c++;
+                }
+                if ($routine->$rank_column === $rankIds['D']) {
+                    $d++;
+                }
+                if ($routine->$rank_column === $rankIds['E']) {
+                    $e++;
+                }
+                if ($routine->$rank_column === $rankIds['F']) {
+                    $f++;
+                }
+            }
+        }
+
+        $data = [
+            ['name' => 'SS', 'count' => $ss],
+            ['name' => 'S', 'count' => $s],
+            ['name' => 'A', 'count' => $a],
+            ['name' => 'B', 'count' => $b],
+            ['name' => 'C', 'count' => $c],
+            ['name' => 'D', 'count' => $d],
+            ['name' => 'E', 'count' => $e],
+            ['name' => 'F', 'count' => $f],
+        ];
+
+        return $data;
+    }
+
     public static function updateRoutineCountData($routine_id)
     {
         $data = self::getAllCountData($routine_id);

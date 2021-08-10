@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rank;
 use App\Models\Routine;
+use App\Services\CountService;
 use App\Services\RecordService;
 use Illuminate\Http\Request;
 
@@ -69,5 +70,14 @@ class RoutineController extends Controller
         Routine::destroy($routine_id);
 
         return response()->json([], 204);
+    }
+
+    public function getRankCount($user_id)
+    {
+        $rank_count = CountService::countRank($user_id);
+
+        return response()->json([
+            'data' => $rank_count
+        ], 200);
     }
 }
