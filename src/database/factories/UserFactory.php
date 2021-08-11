@@ -30,10 +30,10 @@ class UserFactory extends Factory
         ];
     }
 
-    public function configure()
+    public function after()
     {
         return $this->afterCreating(function (User $user) {
-            Routine::factory(10)->make([
+            Routine::factory(10)->after()->make([
                 'user_id' => $user->id
             ]);
         });

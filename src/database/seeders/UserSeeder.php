@@ -17,17 +17,17 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create([
+        User::factory()->after()->create([
             'name' => 'ゲスト',
             'email' => config('const.GUEST_EMAIL'),
         ]);
 
-        User::factory()->create([
+        User::factory()->after()->create([
             'name' => 'そら',
             'email' => 'user1@test.com',
         ]);
 
-        User::factory()->create([
+        User::factory()->after()->create([
             'email' => 'user2@test.com',
         ]);
 

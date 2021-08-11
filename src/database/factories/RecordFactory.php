@@ -32,7 +32,7 @@ class RecordFactory extends Factory
         ];
     }
 
-    public function configure()
+    public function after()
     {
         return $this->afterMaking(function (Record $record) {
             $date_time = $record->created_at;
