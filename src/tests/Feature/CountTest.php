@@ -15,13 +15,11 @@ use Tests\TestCase;
 class CountTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_done_days()
+
+    protected function setUp(): Void
     {
+        parent::setUp();
+
         $this->seed(RankSeeder::class);
 
         $user = User::factory()->create([
@@ -47,7 +45,11 @@ class CountTest extends TestCase
                 'updated_at' => new Carbon($day)
             ]);
         }
+    }
 
+    public function test_get_done_days()
+    {
+        $routine = Routine::first();
         $done_days = CountService::getDoneDays($routine->id);
 
         $this->assertCount(10, $done_days);
@@ -66,5 +68,35 @@ class CountTest extends TestCase
         ];
 
         $this->assertEquals($expect, $done_days);
+    }
+
+    public function test_count_all_days()
+    {
+        $routine = Routine::first();
+        $done_days = CountService::getDoneDays($routine->id);
+
+        $all_days =CountService::countAllDays($done_days);
+
+        $this->assertEquals(7, $all_days);
+    }
+
+    public function test_count_continuous_days()
+    {
+        $routine = Routine::first();
+        $done_days = CountService::getDoneDays($routine->id);
+
+        $continuous_days =CountService::countContinuousDays($done_days);
+
+        $this->assertEquals([2, 3], $continuous_days);
+    }
+
+    public function test_count_recovery()
+    {
+        $routine = Routine::first();
+        $done_days = CountService::getDoneDays($routine->id);
+
+        $recovery_count =CountService::countRecovery($done_days);
+
+        $this->assertEquals(2, $recovery_count);
     }
 }
