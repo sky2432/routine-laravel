@@ -54,6 +54,9 @@
         ],
         "cache": [
             "@php artisan config:cache"
+        ],
+        "cots": [
+            "@php artisan command:test"
         ]
     },
     "extra": {
