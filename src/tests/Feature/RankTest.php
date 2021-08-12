@@ -58,4 +58,9 @@ class RankTest extends TestCase
 
         $this->assertEquals($expect, $rank_count);
     }
+
+    public function test_check_total_days_rank()
+    {
+        
+    }
 }
