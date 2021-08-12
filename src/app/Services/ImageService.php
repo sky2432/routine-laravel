@@ -16,9 +16,9 @@ class ImageService
         }
     }
 
-    public static function uploadImage($request)
+    public static function uploadImage($image)
     {
-        $path = Storage::disk('s3')->putFile('/', $request->file('image'), 'public');
+        $path = Storage::disk('s3')->putFile('/', $image, 'public');
         $url = Storage::disk('s3')->url($path);
         return $url;
     }
