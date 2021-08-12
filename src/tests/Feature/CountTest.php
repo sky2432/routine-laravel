@@ -22,11 +22,7 @@ class CountTest extends TestCase
 
         $this->seed(RankSeeder::class);
 
-        $user = User::factory()->create([
-            'name' => 'そら',
-            'email' => 'user1@test.com',
-            'password' => 1234
-        ]);
+        $user = User::factory()->create();
 
         $date = new Carbon('-9 days');
 
