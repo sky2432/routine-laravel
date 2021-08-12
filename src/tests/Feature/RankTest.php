@@ -19,11 +19,7 @@ class RankTest extends TestCase
     {
         $this->seed(RankSeeder::class);
 
-        $user = User::factory()->create([
-            'name' => 'そら',
-            'email' => 'user1@test.com',
-            'password' => 1234
-        ]);
+        $user = User::factory()->create();
 
         $rank_ids = RankService::getRankIds();
 
@@ -61,6 +57,27 @@ class RankTest extends TestCase
 
     public function test_check_total_days_rank()
     {
-        
+        $this->seed(RankSeeder::class);
+
+        $user = User::factory()->create();
+
+        $routine = Routine::factory()->create([
+            'user_id' => $user->id,
+            'total_days' => 90
+        ]);
+
+        $rank_up_data = RankService::checkTotalDaysRank($routine->id);
+
+        $new_routine = Routine::find($routine->id);
+        $rank_ids = RankService::getRankIds();
+
+        $this->assertEquals($rank_ids['A'], $new_routine->total_rank_id);
+
+        $expect = [
+            'name' => '累計日数',
+            'rank_name' => 'A'
+        ];
+
+        $this->assertEquals($expect, $rank_up_data);
     }
 }
