@@ -15,7 +15,7 @@ class CountService
     {
         $routines = Routine::where('user_id', $user_id)->get();
         $rank_columns = ['total_rank_id', 'highest_continuous_rank_id', 'recovery_rank_id'];
-        $rankIds = RankService::getRankIds();
+        $rank_ids = RankService::getRankIds();
 
         $ss = 0;
         $s = 0;
@@ -28,28 +28,28 @@ class CountService
 
         foreach ($routines as $routine) {
             foreach ($rank_columns as $rank_column) {
-                if ($routine->$rank_column === $rankIds['SS']) {
+                if ($routine->$rank_column === $rank_ids['SS']) {
                     $ss++;
                 }
-                if ($routine->$rank_column === $rankIds['S']) {
+                if ($routine->$rank_column === $rank_ids['S']) {
                     $s++;
                 }
-                if ($routine->$rank_column === $rankIds['A']) {
+                if ($routine->$rank_column === $rank_ids['A']) {
                     $a++;
                 }
-                if ($routine->$rank_column === $rankIds['B']) {
+                if ($routine->$rank_column === $rank_ids['B']) {
                     $b++;
                 }
-                if ($routine->$rank_column === $rankIds['C']) {
+                if ($routine->$rank_column === $rank_ids['C']) {
                     $c++;
                 }
-                if ($routine->$rank_column === $rankIds['D']) {
+                if ($routine->$rank_column === $rank_ids['D']) {
                     $d++;
                 }
-                if ($routine->$rank_column === $rankIds['E']) {
+                if ($routine->$rank_column === $rank_ids['E']) {
                     $e++;
                 }
-                if ($routine->$rank_column === $rankIds['F']) {
+                if ($routine->$rank_column === $rank_ids['F']) {
                     $f++;
                 }
             }

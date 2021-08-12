@@ -25,7 +25,7 @@ class RankTest extends TestCase
             'password' => 1234
         ]);
 
-        $rankIds = RankService::getRankIds();
+        $rank_ids = RankService::getRankIds();
 
         $rank_array = [
             ['F', 'E', 'D'],
@@ -37,9 +37,9 @@ class RankTest extends TestCase
         foreach ($rank_array as $rank) {
             Routine::factory()->create([
             'user_id' => $user->id,
-            'total_rank_id' => $rankIds[$rank[0]],
-            'highest_continuous_rank_id' => $rankIds[$rank[1]],
-            'recovery_rank_id' => $rankIds[$rank[2]],
+            'total_rank_id' => $rank_ids[$rank[0]],
+            'highest_continuous_rank_id' => $rank_ids[$rank[1]],
+            'recovery_rank_id' => $rank_ids[$rank[2]],
         ]);
         }
 
