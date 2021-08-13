@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Rank;
 use App\Models\Record;
-use App\Models\RecoveryRank;
 use App\Models\Routine;
 use App\Models\User;
 use Carbon\Carbon;
@@ -47,6 +46,10 @@ class RoutineFactory extends Factory
         return [
             'name' => Arr::random($routines),
             'user_id' => User::pluck('id')->random(),
+            'total_days' => 0,
+            'continuous_days' => 0,
+            'highest_continuous_days' => 0,
+            'recovery_count' => 0,
             'total_rank_id' => $rank_id,
             'highest_continuous_rank_id' => $rank_id,
             'recovery_rank_id' => $rank_id,
@@ -55,7 +58,7 @@ class RoutineFactory extends Factory
         ];
     }
 
-    public function configure()
+    public function after()
     {
         return $this->afterMaking(function (Routine $routine) {
             $routine_array = $routine->toArray();
@@ -70,7 +73,7 @@ class RoutineFactory extends Factory
             if ($response->wasRecentlyCreated) {
                 $num = $this->faker->randomElement([14, 30, 60, 90, 120, 150, 210, 365]);
 
-                Record::factory($num)->make([
+                Record::factory($num)->after()->make([
                     'routine_id' => $response->id
                 ]);
             }

@@ -4,40 +4,32 @@ namespace App\Services;
 
 use App\Models\Rank;
 use App\Models\Routine;
-use App\Services\CountService;
 
 class RankService
 {
     public static function checkAllRank($routine_id)
     {
-        $count_data = CountService::getAllCountData($routine_id);
-        $rank_up = [];
+        $rank_up_data = [];
 
-        $total_res = self::checkTotalDaysRank(
-            $routine_id,
-            $count_data['all_days']
-        );
+        $total_res = self::checkTotalDaysRank($routine_id);
         if ($total_res) {
-            $rank_up[] = $total_res;
+            $rank_up_data[] = $total_res;
         }
-
-        $continuous_res = self::checkContinuousDaysRank($routine_id, $count_data['highest_continuous_days']);
+        $continuous_res = self::checkContinuousDaysRank($routine_id);
         if ($continuous_res) {
-            $rank_up[] = $continuous_res;
+            $rank_up_data[] = $continuous_res;
         }
-
-        $recovery_res = self::checkRecoveryRank($routine_id, $count_data['recovery_count']);
+        $recovery_res = self::checkRecoveryRank($routine_id);
         if ($recovery_res) {
-            $rank_up[] = $recovery_res;
+            $rank_up_data[] = $recovery_res;
         }
 
-
-        return $rank_up;
+        return $rank_up_data;
     }
 
-    public static function checkTotalDaysRank($routine_id, $total_days)
+    public static function checkTotalDaysRank($routine_id)
     {
-        $rankIds = self::getRankIds();
+        $rank_ids = self::getRankIds();
         $item = Routine::find($routine_id);
         $data = [
             ['days' => 180, 'rank' => config('const.RANK')[7]],
@@ -51,23 +43,23 @@ class RankService
         ];
 
         foreach ($data as $value) {
-            if ($total_days >= $value['days']) {
-                if ($item->total_rank_id === $rankIds[$value['rank']]) {
+            if ($item->total_days >= $value['days']) {
+                if ($item->total_rank_id === $rank_ids[$value['rank']]) {
                     return;
                 }
-                $item->update(['total_rank_id' => $rankIds[$value['rank']]]);
+                $item->update(['total_rank_id' => $rank_ids[$value['rank']]]);
 
-                $rank['name'] = '累計日数';
-                $rank['rank_name'] = $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
+                $rank_up_data['name'] = '累計日数';
+                $rank_up_data['rank_name'] = Rank::Name($rank_ids[$value['rank']]);
 
-                return $rank;
+                return $rank_up_data;
             }
         }
     }
 
-    public static function checkContinuousDaysRank($routine_id, $continuous_days)
+    public static function checkContinuousDaysRank($routine_id)
     {
-        $rankIds = self::getRankIds();
+        $rank_ids = self::getRankIds();
         $item = Routine::find($routine_id);
 
         $data = [
@@ -82,23 +74,23 @@ class RankService
         ];
 
         foreach ($data as $value) {
-            if ($continuous_days >= $value['days']) {
-                if ($item->highest_continuous_rank_id === $rankIds[$value['rank']]) {
+            if ($item->highest_continuous_days >= $value['days']) {
+                if ($item->highest_continuous_rank_id === $rank_ids[$value['rank']]) {
                     return;
                 }
-                $item->update(['highest_continuous_rank_id' => $rankIds[$value['rank']]]);
+                $item->update(['highest_continuous_rank_id' => $rank_ids[$value['rank']]]);
 
-                $rank['name'] = '最高継続日数';
-                $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
+                $rank_up_data['name'] = '最高継続日数';
+                $rank_up_data['rank_name'] = Rank::Name($rank_ids[$value['rank']]);
 
-                return $rank;
+                return $rank_up_data;
             }
         }
     }
 
-    public static function checkRecoveryRank($routine_id, $recovery_count)
+    public static function checkRecoveryRank($routine_id)
     {
-        $rankIds = self::getRankIds();
+        $rank_ids = self::getRankIds();
         $item = Routine::find($routine_id);
 
         $data = [
@@ -114,16 +106,16 @@ class RankService
 
 
         foreach ($data as $value) {
-            if ($recovery_count >= $value['count']) {
-                if ($item->recovery_rank_id === $rankIds[$value['rank']]) {
+            if ($item->recovery_count >= $value['count']) {
+                if ($item->recovery_rank_id === $rank_ids[$value['rank']]) {
                     return;
                 }
-                $item->update(['recovery_rank_id' => $rankIds[$value['rank']]]);
+                $item->update(['recovery_rank_id' => $rank_ids[$value['rank']]]);
 
-                $rank['name'] = 'リカバリー';
-                $rank['rank_name'] = Rank::Name($rankIds[$value['rank']]);
+                $rank_up_data['name'] = 'リカバリー';
+                $rank_up_data['rank_name'] = Rank::Name($rank_ids[$value['rank']]);
 
-                return $rank;
+                return $rank_up_data;
             }
         }
     }
@@ -137,12 +129,12 @@ class RankService
         foreach ($ranks as $rank) {
             foreach ($rank_names as $rank_name) {
                 if ($rank->name === $rank_name) {
-                    $rankIds[$rank_name] = $rank->id;
+                    $rank_ids[$rank_name] = $rank->id;
                     break;
                 }
             }
         }
 
-        return $rankIds;
+        return $rank_ids;
     }
 }

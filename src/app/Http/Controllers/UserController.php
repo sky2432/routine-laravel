@@ -67,7 +67,7 @@ class UserController extends Controller
         $item = User::find($user_id);
         ImageService::deleteImage($item->image_url);
 
-        $url = ImageService::uploadImage($request);
+        $url = ImageService::uploadImage($request->file('image'));
         $item->image_url = $url;
         $item->save();
 
