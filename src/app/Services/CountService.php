@@ -82,18 +82,18 @@ class CountService
 
     public static function getAllCountData($routine_id)
     {
-        $done_days =  self::getDoneDays($routine_id);
-        $data['all_days'] = self::countAllDays($done_days);
-        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($done_days);
-        $data['recovery_count'] = self::countRecovery($done_days);
+        $done_dates =  self::getDoneDates($routine_id);
+        $data['all_days'] = self::countAllDays($done_dates);
+        [$data['continuous_days'], $data['highest_continuous_days']] = self::countContinuousDays($done_dates);
+        $data['recovery_count'] = self::countRecovery($done_dates);
 
         return $data;
     }
 
-    public static function countAllDays($done_days)
+    public static function countAllDays($done_dates)
     {
         $count = 0;
-        foreach ($done_days as $key => $value) {
+        foreach ($done_dates as $key => $value) {
             if ($value !== 0) {
                 $count++;
             }
@@ -102,12 +102,12 @@ class CountService
         return $count;
     }
 
-    public static function countContinuousDays($done_days)
+    public static function countContinuousDays($done_dates)
     {
         $count = 0;
         $highestCount = 0;
         $today = Carbon::today();
-        foreach ($done_days as $key => $value) {
+        foreach ($done_dates as $key => $value) {
             $dbDate = new Carbon($key);
             if ($dbDate->eq($today)) {
                 if ($value !== 0) {
@@ -135,13 +135,14 @@ class CountService
         return [$count, $highestCount];
     }
 
-    public static function countRecovery($done_days)
+    public static function countRecovery($done_dates)
     {
         $first = false;
         $status = false;
         $count = 0;
         $recovery = 0;
-        foreach ($done_days as $key => $value) {
+
+        foreach ($done_dates as $key => $value) {
             if ($value === 1 && $first === false) {
                 $first = true;
             }
@@ -162,7 +163,18 @@ class CountService
         return $recovery;
     }
 
-    public static function getDoneDays($routine_id)
+    public static function getDoneDates($routine_id)
+    {
+        [$begin, $end] = self::createBeginAndEnd($routine_id);
+        $base_period = self::createBasePeriod($begin, $end);
+        $done_dates_array = self::calculateDoneDate($routine_id, $begin, $end);
+
+        $done_dates_with_zero_fill = array_replace($base_period, $done_dates_array);
+
+        return $done_dates_with_zero_fill;
+    }
+
+    public static function createBeginAndEnd($routine_id)
     {
         $startDate = Routine::where('id', $routine_id)->value('created_at');
         $begin = Carbon::create($startDate->year, $startDate->month, $startDate->day);
@@ -170,30 +182,33 @@ class CountService
         $today = Carbon::today();
         $end = $today->copy()->endOfDay();
 
-        $period = new DatePeriod($begin, new DateInterval('P1D'), $end);//$begin以上$rangeEnd未満
+        return [$begin, $end];
+    }
 
-        $dbData = [];
+
+    public static function createBasePeriod($begin, $end)
+    {
+        $period = new DatePeriod($begin, new DateInterval('P1D'), $end);//$begin以上$end未満
 
         foreach ($period as $date) {
-            $range[$date->format("Y-m-d")] = 0;
+            $base_period[$date->format("Y-m-d")] = 0;
         }
 
-        $data = Record::where('routine_id', $routine_id)
-        ->whereBetween('created_at', [$begin, $end])//$begin以上$dbEnd以下
-        ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as day'), DB::raw('count(created_at) as count'))
-        ->groupBy('day')
+        return $base_period;
+    }
+
+    public static function calculateDoneDate($routine_id, $begin, $end)
+    {
+        $done_dates_object_array = Record::where('routine_id', $routine_id)
+        ->whereBetween('created_at', [$begin, $end])//$begin以上$end以下
+        ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('count(created_at) as count'))
+        ->groupBy('date')
         ->get();
 
-        foreach ($data as $val) {
-            $dbData[$val->day] = $val->count;
+        foreach ($done_dates_object_array as $done_date_object) {
+            $done_dates_array[$done_date_object->date] = $done_date_object->count;
         }
 
-        $data = array_replace($range, $dbData);
-
-        // デバック用↓
-        // echo $routine_id;
-        // dump($data);
-
-        return $data;
+        return $done_dates_array;
     }
 }

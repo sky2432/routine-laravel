@@ -46,9 +46,9 @@ class CountTest extends TestCase
     public function test_get_done_days()
     {
         $routine = Routine::first();
-        $done_days = CountService::getDoneDays($routine->id);
+        $done_dates = CountService::getDoneDates($routine->id);
 
-        $this->assertCount(10, $done_days);
+        $this->assertCount(10, $done_dates);
 
         $expect = [
             Carbon::today()->subDays(9)->format('Y-m-d') => 1,
@@ -63,15 +63,15 @@ class CountTest extends TestCase
             Carbon::today()->format('Y-m-d') => 0,
         ];
 
-        $this->assertEquals($expect, $done_days);
+        $this->assertEquals($expect, $done_dates);
     }
 
     public function test_count_all_days()
     {
         $routine = Routine::first();
-        $done_days = CountService::getDoneDays($routine->id);
+        $done_dates = CountService::getDoneDates($routine->id);
 
-        $all_days =CountService::countAllDays($done_days);
+        $all_days =CountService::countAllDays($done_dates);
 
         $this->assertEquals(7, $all_days);
     }
@@ -79,9 +79,9 @@ class CountTest extends TestCase
     public function test_count_continuous_days()
     {
         $routine = Routine::first();
-        $done_days = CountService::getDoneDays($routine->id);
+        $done_dates = CountService::getDoneDates($routine->id);
 
-        $continuous_days =CountService::countContinuousDays($done_days);
+        $continuous_days =CountService::countContinuousDays($done_dates);
 
         $this->assertEquals([2, 3], $continuous_days);
     }
@@ -89,9 +89,9 @@ class CountTest extends TestCase
     public function test_count_recovery()
     {
         $routine = Routine::first();
-        $done_days = CountService::getDoneDays($routine->id);
+        $done_dates = CountService::getDoneDates($routine->id);
 
-        $recovery_count =CountService::countRecovery($done_days);
+        $recovery_count =CountService::countRecovery($done_dates);
 
         $this->assertEquals(2, $recovery_count);
     }
