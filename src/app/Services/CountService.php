@@ -109,24 +109,25 @@ class CountService
         $today = Carbon::today();
         foreach ($done_dates as $key => $value) {
             $dbDate = new Carbon($key);
+            // 今日の場合
             if ($dbDate->eq($today)) {
                 if ($value !== 0) {
                     $count++;
-                    if ($highestCount < $count) {
+                    if ($count > $highestCount) {
                         $highestCount = $count;
                     }
                 }
+                // 達成していなくても$countを0にしない
                 if ($value === 0) {
-                    if ($highestCount < $count) {
+                    if ($count > $highestCount) {
                         $highestCount = $count;
                     }
                 }
             } elseif ($value !== 0) {
                 $count++;
             } elseif ($value === 0) {
-                if ($highestCount < $count) {
+                if ($count > $highestCount) {
                     $highestCount = $count;
-                    $count = 0;
                 }
                 $count = 0;
             }
@@ -142,15 +143,16 @@ class CountService
         $count = 0;
         $recovery = 0;
 
+        // 連続日数が
         foreach ($done_dates as $key => $value) {
-            if ($value === 1 && $first === false) {
+            if ($first === false && $value === 1) {
                 $first = true;
             }
-            if ($value === 0  && $first === true) {
+            if ($first === true && $value === 0) {
                 $status = true;
                 $count = 0;
             }
-            if ($value === 1 && $status === true) {
+            if ($status === true && $value === 1) {
                 $count++;
                 if ($count === 2) {
                     $recovery++;
@@ -167,7 +169,7 @@ class CountService
     {
         [$begin, $end] = self::createBeginAndEnd($routine_id);
         $base_period = self::createBasePeriod($begin, $end);
-        $done_dates_array = self::calculateDoneDate($routine_id, $begin, $end);
+        $done_dates_array = self::calculateDoneDates($routine_id, $begin, $end);
 
         $done_dates_with_zero_fill = array_replace($base_period, $done_dates_array);
 
@@ -197,10 +199,10 @@ class CountService
         return $base_period;
     }
 
-    public static function calculateDoneDate($routine_id, $begin, $end)
+    public static function calculateDoneDates($routine_id, $first, $last)
     {
         $done_dates_object_array = Record::where('routine_id', $routine_id)
-        ->whereBetween('created_at', [$begin, $end])//$begin以上$end以下
+        ->whereBetween('created_at', [$first, $last])//$first以上$last以下
         ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('count(created_at) as count'))
         ->groupBy('date')
         ->get();
