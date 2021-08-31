@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\production;
 
 use App\Models\Routine;
 use App\Models\User;
@@ -20,15 +20,6 @@ class UserSeeder extends Seeder
         User::factory()->after()->create([
             'name' => 'ゲスト',
             'email' => config('const.GUEST_EMAIL'),
-        ]);
-
-        User::factory()->after()->create([
-            'name' => 'そら',
-            'email' => 'user1@test.com',
-        ]);
-
-        User::factory()->after()->create([
-            'email' => 'user2@test.com',
         ]);
 
         $routines = Routine::all();
