@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('image_url')->default('https://routine-dev.s3.ap-northeast-1.amazonaws.com/default-image.jpg');
+            $table->string('image_url')->default(env('DEFAULT_IMAGE_URL'));
             $table->timestamps();
         });
     }
