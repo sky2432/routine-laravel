@@ -29,6 +29,7 @@ class UserController extends Controller
     {
         $item = new User;
         $item->password = Hash::make($request->password);
+        $item->image_url = config('const.DEFAULT_IMAGE_URL');
         $item->fill($request->all())->save();
 
         return response()->json([
