@@ -12,18 +12,18 @@ class RecordController extends Controller
 {
     public function show($routine_id)
     {
-        $items = Record::where('routine_id', $routine_id)->get();
+        $records = Record::where('routine_id', $routine_id)->get();
 
         return response()->json([
-            'data' => $items
+            'data' => $records
         ], 200);
     }
 
 
     public function store(Request $request)
     {
-        $item = new Record();
-        $item->fill($request->all())->save();
+        $record = new Record();
+        $record->fill($request->all())->save();
 
         $rank_up_data = $this->updateCountAndRank($request->routine_id);
 
@@ -37,10 +37,10 @@ class RecordController extends Controller
 
     public function destroy($record_id)
     {
-        $item = Record::find($record_id);
+        $record = Record::find($record_id);
         Record::destroy($record_id);
 
-        $this->updateCountAndRank($item->routine_id);
+        $this->updateCountAndRank($record->routine_id);
 
         return response()->json([], 204);
     }

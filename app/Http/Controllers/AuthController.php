@@ -10,8 +10,8 @@ class AuthController extends Controller
 {
     public function login()
     {
-        $item = User::where('email', request('email'))->first();
-        LoginRequest::rules(request(), $item, 'users');
+        $user = User::where('email', request('email'))->first();
+        LoginRequest::rules(request(), $user, 'users');
 
         $credentials = request(['email', 'password']);
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Logout successfully ']);
     }
 
     public function refresh()

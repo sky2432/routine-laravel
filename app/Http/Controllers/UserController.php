@@ -27,53 +27,53 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $item = new User;
-        $item->password = Hash::make($request->password);
-        $item->image_url = config('const.default_image_url');
-        $item->fill($request->all())->save();
+        $user = new User;
+        $user->password = Hash::make($request->password);
+        $user->image_url = config('const.default_image_url');
+        $user->fill($request->all())->save();
 
         return response()->json([
-            'data' => $item
+            'message' => 'Create user successfuly'
         ], 200);
     }
 
     //名前・メールアドレスの更新
     public function update(Request $request, $user_id)
     {
-        $item = User::find($user_id);
-        UpdateNameEmailRequest::rules($request, $user_id, 'users', $item);
+        $user = User::find($user_id);
+        UpdateNameEmailRequest::rules($request, $user_id, 'users', $user);
 
-        $item->update($request->all());
+        $user->update($request->all());
 
         return response()->json([
-            'data' => $item
+            'data' => $user
         ], 200);
     }
 
     public function updatePassword(Request $request, $user_id)
     {
-        $item = User::find($user_id);
-        UpdatePasswordRequest::rules($request, $item);
+        $user = User::find($user_id);
+        UpdatePasswordRequest::rules($request, $user);
 
-        $item->password = Hash::make($request->new_password);
-        $item->save();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
 
         return response()->json([
-            'data' => $item
+            'data' => $user
         ], 200);
     }
 
     public function updateImage(Request $request, $user_id)
     {
-        $item = User::find($user_id);
-        ImageService::deleteImage($item->image_url);
+        $user = User::find($user_id);
+        ImageService::deleteImage($user->image_url);
 
         $url = ImageService::uploadImage($request->file('image'));
-        $item->image_url = $url;
-        $item->save();
+        $user->image_url = $url;
+        $user->save();
 
         return response()->json([
-            'data' => $item,
+            'data' => $user,
         ], 200);
     }
 

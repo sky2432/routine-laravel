@@ -12,56 +12,56 @@ class RoutineController extends Controller
 {
     public function store(Request $request)
     {
-        $item = new Routine;
-        $item->fill($request->all());
+        $routine = new Routine;
+        $routine->fill($request->all());
         $default_id = Rank::DefaultId();
-        $item->total_rank_id = $default_id;
-        $item->highest_continuous_rank_id = $default_id;
-        $item->recovery_rank_id = $default_id;
-        $item->save();
+        $routine->total_rank_id = $default_id;
+        $routine->highest_continuous_rank_id = $default_id;
+        $routine->recovery_rank_id = $default_id;
+        $routine->save();
 
         return response()->json([
-            'data' => $item
+            'message' => 'Create routine successfuly'
         ], 200);
     }
 
     public function show($user_id)
     {
-        $items = Routine::WithChildTable()->where('user_id', $user_id)->where('is_archive', false)->get();
+        $routines = Routine::WithChildTable()->where('user_id', $user_id)->where('is_archive', false)->get();
 
-        $routines = RecordService::insertTodayRecord($items);
+        $routines_with_today_record = RecordService::insertTodayRecord($routines);
+
+        return response()->json([
+            'data' => $routines_with_today_record
+        ], 200);
+    }
+
+    public function showArchive($user_id)
+    {
+        $routines = Routine::WithChildTable()->where('user_id', $user_id)->where('is_archive', true)->get();
 
         return response()->json([
             'data' => $routines
         ], 200);
     }
 
-    public function showArchive($user_id)
-    {
-        $items = Routine::WithChildTable()->where('user_id', $user_id)->where('is_archive', true)->get();
-
-        return response()->json([
-            'data' => $items
-        ], 200);
-    }
-
     public function update(Request $request, $routine_id)
     {
-        $item = Routine::find($routine_id);
-        $item->update(['name' => $request->name]);
+        $routine = Routine::find($routine_id);
+        $routine->update(['name' => $request->name]);
 
         return response()->json([
-            'data' => $item
+            'data' => $routine
         ], 200);
     }
 
     public function updateArchive(Request $request)
     {
-        $item = Routine::find($request->routine_id);
-        $item->update(['is_archive' => !$item->is_archive]);
+        $routine = Routine::find($request->routine_id);
+        $routine->update(['is_archive' => !$routine->is_archive]);
 
         return response()->json([
-            'data' => $item
+            'data' => $routine
         ], 200);
     }
 
