@@ -16,42 +16,42 @@ class RankSeeder extends Seeder
     {
         DB::table('ranks')->insert([
             [
-                'name' => config('const.RANK')[0],
+                'name' => config('const.ranks')[0],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[1],
+                'name' => config('const.ranks')[1],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[2],
+                'name' => config('const.ranks')[2],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[3],
+                'name' => config('const.ranks')[3],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[4],
+                'name' => config('const.ranks')[4],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[5],
+                'name' => config('const.ranks')[5],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[6],
+                'name' => config('const.ranks')[6],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => config('const.RANK')[7],
+                'name' => config('const.ranks')[7],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

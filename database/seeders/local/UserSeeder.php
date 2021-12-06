@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         User::factory()->after()->create([
             'name' => 'ゲスト',
-            'email' => config('const.GUEST_EMAIL'),
+            'email' => config('const.guest_email'),
         ]);
 
         User::factory()->after()->create([

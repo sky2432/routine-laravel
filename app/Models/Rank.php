@@ -21,7 +21,7 @@ class Rank extends Model
 
     public function scopeDefaultId($query)
     {
-        return $query->where('name', config('const.RANK')[0])->value('id');
+        return $query->where('name', config('const.ranks')[0])->value('id');
     }
 
     public function scopeName($query, $rank_id)

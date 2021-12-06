@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('1234'),
-            'image_url' => config('const.DEFAULT_IMAGE_URL'),
+            'image_url' => config('const.default_image_url'),
         ];
     }
 

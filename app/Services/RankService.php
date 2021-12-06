@@ -32,14 +32,14 @@ class RankService
         $rank_ids = self::getRankIds();
         $item = Routine::find($routine_id);
         $data = [
-            ['days' => 180, 'rank' => config('const.RANK')[7]],
-            ['days' => 120, 'rank' => config('const.RANK')[6]],
-            ['days' => 90, 'rank' => config('const.RANK')[5]],
-            ['days' => 60, 'rank' => config('const.RANK')[4]],
-            ['days' => 30, 'rank' => config('const.RANK')[3]],
-            ['days' => 14, 'rank' => config('const.RANK')[2]],
-            ['days' => 7, 'rank' => config('const.RANK')[1]],
-            ['days' => 0, 'rank' => config('const.RANK')[0]],
+            ['days' => 180, 'rank' => config('const.ranks')[7]],
+            ['days' => 120, 'rank' => config('const.ranks')[6]],
+            ['days' => 90, 'rank' => config('const.ranks')[5]],
+            ['days' => 60, 'rank' => config('const.ranks')[4]],
+            ['days' => 30, 'rank' => config('const.ranks')[3]],
+            ['days' => 14, 'rank' => config('const.ranks')[2]],
+            ['days' => 7, 'rank' => config('const.ranks')[1]],
+            ['days' => 0, 'rank' => config('const.ranks')[0]],
         ];
 
         foreach ($data as $value) {
@@ -63,14 +63,14 @@ class RankService
         $item = Routine::find($routine_id);
 
         $data = [
-            ['days' => 90, 'rank' => config('const.RANK')[7]],
-            ['days' => 60, 'rank' => config('const.RANK')[6]],
-            ['days' => 30, 'rank' => config('const.RANK')[5]],
-            ['days' => 21, 'rank' => config('const.RANK')[4]],
-            ['days' => 14, 'rank' => config('const.RANK')[3]],
-            ['days' => 7, 'rank' => config('const.RANK')[2]],
-            ['days' => 3, 'rank' => config('const.RANK')[1]],
-            ['days' => 0, 'rank' => config('const.RANK')[0]],
+            ['days' => 90, 'rank' => config('const.ranks')[7]],
+            ['days' => 60, 'rank' => config('const.ranks')[6]],
+            ['days' => 30, 'rank' => config('const.ranks')[5]],
+            ['days' => 21, 'rank' => config('const.ranks')[4]],
+            ['days' => 14, 'rank' => config('const.ranks')[3]],
+            ['days' => 7, 'rank' => config('const.ranks')[2]],
+            ['days' => 3, 'rank' => config('const.ranks')[1]],
+            ['days' => 0, 'rank' => config('const.ranks')[0]],
         ];
 
         foreach ($data as $value) {
@@ -94,14 +94,14 @@ class RankService
         $item = Routine::find($routine_id);
 
         $data = [
-            ['count' => 18, 'rank' => config('const.RANK')[7]],
-            ['count' => 15, 'rank' => config('const.RANK')[6]],
-            ['count' => 12, 'rank' => config('const.RANK')[5]],
-            ['count' => 9, 'rank' => config('const.RANK')[4]],
-            ['count' => 6, 'rank' => config('const.RANK')[3]],
-            ['count' => 3, 'rank' => config('const.RANK')[2]],
-            ['count' => 1, 'rank' => config('const.RANK')[1]],
-            ['count' => 0, 'rank' => config('const.RANK')[0]],
+            ['count' => 18, 'rank' => config('const.ranks')[7]],
+            ['count' => 15, 'rank' => config('const.ranks')[6]],
+            ['count' => 12, 'rank' => config('const.ranks')[5]],
+            ['count' => 9, 'rank' => config('const.ranks')[4]],
+            ['count' => 6, 'rank' => config('const.ranks')[3]],
+            ['count' => 3, 'rank' => config('const.ranks')[2]],
+            ['count' => 1, 'rank' => config('const.ranks')[1]],
+            ['count' => 0, 'rank' => config('const.ranks')[0]],
         ];
 
 
@@ -124,7 +124,7 @@ class RankService
     {
         $ranks = Rank::all();
 
-        $rank_names = config('const.RANK');
+        $rank_names = config('const.ranks');
 
         foreach ($ranks as $rank) {
             foreach ($rank_names as $rank_name) {
